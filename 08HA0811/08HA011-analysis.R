@@ -28,7 +28,7 @@ options(width=200)  # how wide to print output
 # Define variables that provide options for the analysis
 
 Station.Code <- '08HA011'
-Station.Name <- 'Upper Cowichan River'
+Station.Name <- 'Cowichen River near Duncan'
 Station.Area <- 826    # square km's
 
 start.year   <- 1965  # when do you want the analysis to start at.
@@ -89,17 +89,17 @@ ggplot2::ggplot(data=plotdata, aes(x=Year, y=Value))+
 
 #------------------------------------------------------------------------------
 # Some preliminary plots to check for outliers etc
-ggplot2::ggplot(data=flow[flow$Year >= start.year,], aes(x=Date, y=Q))+
+ggplot2::ggplot(data=flow[flow$Year >= start.year & flow$Year <=end.year,], aes(x=Date, y=Q))+
    ggtitle("Q by date")+
    theme(plot.title = element_text(hjust = 0.5))+
    geom_line(aes(group=Year))
 
-ggplot2::ggplot(data=flow[flow$Year >= start.year,], aes(x=Date, y=log(Q)))+
+ggplot2::ggplot(data=flow[flow$Year >= start.year & flow$Year <=end.year,], aes(x=Date, y=log(Q)))+
    ggtitle("log(Q) by date")+
    theme(plot.title = element_text(hjust = 0.5))+
    geom_line(aes(group=Year))
 
-ggplot2::ggplot(data=flow[flow$Year >= start.year,], aes(x=Date, y=log(Q)))+
+ggplot2::ggplot(data=flow[flow$Year >= start.year & flow$Year <=end.year,], aes(x=Date, y=log(Q)))+
    ggtitle("Q by date")+
    theme(plot.title = element_text(hjust = 0.5))+
    geom_line()+
@@ -121,7 +121,8 @@ stat.annual <- compute.Q.stat.annual(Station.Code=Station.Code,
                           Station.Area=Station.Area,
                           flow=flow,
                           start.year=start.year,
-                          end.year=end.year)
+                          end.year=end.year,
+                          report.dir=report.dir)
 
 # but you have control over which files to be written and NA removal etc. See help file
 stat.annual <- compute.Q.stat.annual(Station.Code=Station.Code,
@@ -129,8 +130,8 @@ stat.annual <- compute.Q.stat.annual(Station.Code=Station.Code,
                           flow=flow,
                           start.year=start.year,
                           end.year=end.year,
-                          write.stat.csv=TRUE,        # write out statistics
-                          write.stat.trans.csv=TRUE,  # write out statistics in transposed format
+                          write.wy.stat.csv=FALSE,        # write out statistics?
+                          write.stat.trans.csv=FALSE,  # write out statistics in transposed format
                           plot.stat.trend=TRUE,
                           report.dir=report.dir,
                           na.rm=na.rm)
@@ -159,7 +160,8 @@ stat.longterm <- compute.Q.stat.longterm(Station.Code=Station.Code,
                           Station.Area=Station.Area,
                           flow=flow,
                           start.year=start.year,
-                          end.year=end.year)
+                          end.year=end.year,
+                          report.dir=report.dir)
 
 names(stat.longterm)
 
@@ -183,7 +185,8 @@ percentile.longterm <- compute.Q.percentile.longterm(Station.Code=Station.Code,
                           Station.Area=Station.Area,
                           flow=flow,
                           start.year=start.year,
-                          end.year=end.year)
+                          end.year=end.year,
+                          report.dir=report.dir)
 
 
 names(percentile.longterm)
@@ -201,23 +204,25 @@ percentile.longterm$file.stat.trans.csv
 #--------------------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------------------
-# Compute the volume frequency analysis (similar to HEC SSP)
-
-vfa.analysis <- compute.volume.frequency.analysis(
-                      Station.Code=Station.Code,
-                      flow        =flow,
-                      start.year  =start.year,
-                      end.year    =end.year)
-
-help(compute.volume.frequency.analysis)
-
+# Compute the volume frequency analysis on the calendar year
 
 vfa.analysis <- compute.volume.frequency.analysis(
                       Station.Code=Station.Code,
                       flow        =flow,
                       start.year  =start.year,
                       end.year    =end.year,
-                      use.water.year=TRUE,
+                      report.dir  =report.dir)
+
+help(compute.volume.frequency.analysis)
+
+
+# Compute the volume frequency analysis on the water-uyear
+vfa.analysis <- compute.volume.frequency.analysis(
+                      Station.Code=Station.Code,
+                      flow        =flow,
+                      start.year  =start.year,
+                      end.year    =end.year,
+                      use.water.year=TRUE,  # here is the change
                       use.log=FALSE,
                       use.max=FALSE,
                       fit.distr="PIII",
