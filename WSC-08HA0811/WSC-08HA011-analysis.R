@@ -10,7 +10,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-# Sample script for the analysis of Station 08HA011
+# Sample script for the analysis of Station WSC-08HA011
 
 
 library(ggplot2)    # for plots
@@ -27,15 +27,40 @@ options(width=200)  # how wide to print output
 
 # Define variables that provide options for the analysis
 
-Station.Code <- '08HA011'
-Station.Name <- 'Cowichen River near Duncan'
+Station.Code <- 'WSC-08HA011'
+Station.Name <- 'Cowichan River near Duncan'
 Station.Area <- 826    # square km's
 
 start.year   <- 1965  # when do you want the analysis to start at.
 end.year     <- 2012  # what is last year with complete data
 
+
+
+
 # Get the data
-flow <- read.csv(file.path("08HA011_STREAMFLOW_SUMMARY.csv"), header=TRUE, as.is=TRUE, strip.white=TRUE)
+# We will create a data frame (flow) with two varibles:
+#
+#  Variable | Description
+#  ---------|-------------
+#  Date     | The data of the reading in standard R date class format.
+#           | For example to convert a 4-digit year, numeric month, and numeric day
+#           | of the month use
+#           |    flow$Date  <- as.Date{paste(flow$Year,'-',flow$Month,'-',flow$Day,sep="").
+#           | To convert a character string (e.g. '1/15/2001') use the
+#           |    flow$Date <- as.Date(flow$chardate, "%d/%m/%Y") .
+#           | The formatting codes (%Y etc) are explained in the help for the strptime() function.
+#
+# Q         | The average daily flow as a numeric value.
+
+# Other variables in the data frame will be ignored.
+
+# Missing values can be indicated by leaving out dates with missing
+# discharge values, or by setting the value of __Q__ to missing (NA).
+
+flow <- read.csv(file.path("WSC-08HA011_STREAMFLOW_SUMMARY.csv"), header=TRUE, as.is=TRUE, strip.white=TRUE)
+
+# Make sure that the Q is numeric
+flow$Q <- as.numeric(flow$Q)
 
 # Create a date variable
 flow$Date <- as.Date(paste(flow$Year,flow$Month, flow$Day, sep="-"), "%Y-%m-%d")
