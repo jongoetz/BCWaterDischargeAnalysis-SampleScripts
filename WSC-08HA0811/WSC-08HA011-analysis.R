@@ -182,7 +182,6 @@ stat.annual$file.stat.trend.pdf
 # Compute the long-term statistics
 
 stat.longterm <- compute.Q.stat.longterm(Station.Code=Station.Code,
-                          Station.Area=Station.Area,
                           flow=flow,
                           start.year=start.year,
                           end.year=end.year,
@@ -190,13 +189,13 @@ stat.longterm <- compute.Q.stat.longterm(Station.Code=Station.Code,
 
 names(stat.longterm)
 
-head(stat.longterm$Q.stat.longterm)
-tail(stat.longterm$Q.stat.longterm)
+head(stat.longterm$Q.cy.stat.longterm)
+tail(stat.longterm$Q.cy.stat.longterm)
 
-head(stat.longterm$Q.stat.longterm.trans)
+head(stat.longterm$Q.cy.stat.longterm.trans)
 
-stat.longterm$file.stat.csv
-stat.longterm$file.stat.trans.csv
+stat.longterm$file.cy.stat.csv
+stat.longterm$file.cy.stat.trans.csv
 
 
 
@@ -207,7 +206,6 @@ stat.longterm$file.stat.trans.csv
 # Compute the long-term percentile statistics
 
 percentile.longterm <- compute.Q.percentile.longterm(Station.Code=Station.Code,
-                          Station.Area=Station.Area,
                           flow=flow,
                           start.year=start.year,
                           end.year=end.year,
@@ -216,13 +214,13 @@ percentile.longterm <- compute.Q.percentile.longterm(Station.Code=Station.Code,
 
 names(percentile.longterm)
 
-head(percentile.longterm$Q.percentile.stat)
-tail(percentile.longterm$Q.percentile.stat)
+head(percentile.longterm$Q.cy.percentile.stat)
+tail(percentile.longterm$Q.cy.percentile.stat)
 
-head(percentile.longterm$Q.percentile.stat.trans)
+head(percentile.longterm$Q.cy.percentile.stat.trans)
 
-percentile.longterm$file.stat.csv
-percentile.longterm$file.stat.trans.csv
+percentile.longterm$file.cy.stat.csv
+percentile.longterm$file.cy.stat.trans.csv
 
 
 
@@ -241,7 +239,7 @@ vfa.analysis <- compute.volume.frequency.analysis(
 help(compute.volume.frequency.analysis)
 
 
-# Compute the volume frequency analysis on the water-uyear
+# Compute the volume frequency analysis on the water year
 vfa.analysis <- compute.volume.frequency.analysis(
                       Station.Code=Station.Code,
                       flow        =flow,
